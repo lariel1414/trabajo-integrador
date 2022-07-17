@@ -2,6 +2,7 @@ package web;
 
 import data.LibreriaDAO;
 import entity.Libros;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -16,29 +17,55 @@ public class ServletControlador extends HttpServlet {
         String accion = req.getParameter("accion");
 
         if (accion != null) {
+            System.out.println(accion + " esto es lo que vino doget");
             switch (accion) {
                 case "editar":
                     editarLibro(req,res);
+                    
                     break;
                     
                     case "alquilar":
+                       int copias = Integer.parseInt(req.getParameter("copias"));
+                       System.out.println(copias);
+                       if (copias == 0) {
+                       accionDefault(req, res);
+                       break;
+                       }
+                    
                     alquilarLibro(req,res);
                     break;
                     
                     case "devolver":
+                        int copiasafu = Integer.parseInt(req.getParameter("copiasafu"));
+                       System.out.println(copiasafu);
+                       if (copiasafu == 0) {
+                       accionDefault(req, res);
+                       break;
+                       }
+                                     
                     devolverLibro(req,res);
                     break;
                     
                     
                 case "eliminar":
+                    
                     eliminarLibro(req,res);
                     break;
+                case "retirar":
+                    
+                    alquilarLibro1(req,res);
+                    break;
+                case "retornar":
+                    devolverLibro1(req, res);
+                    break;     
                     
                 default:
+                    
                     accionDefault(req, res);
                     break;
             }
         } else {
+            
             accionDefault(req, res);
         }
     }
@@ -47,15 +74,16 @@ public class ServletControlador extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res)throws ServletException, IOException {
         String accion = req.getParameter("accion");
         if (accion != null) {
+            System.out.println(accion + " esto es lo que vino dopost");
             switch (accion) {
                 case "insertar":
                     guardarLibro(req, res);
                     break;
-                case "alquilar":
+                case "retirar":
                     alquilarLibro1(req, res);
-                    System.out.println("post alquilar");
+                    
                     break;
-                case "devolver":
+                case "retornar":
                     devolverLibro1(req, res);
                     break;    
                 case "modificar":
@@ -137,34 +165,36 @@ public class ServletControlador extends HttpServlet {
         String autor = req.getParameter("autor");
         int cantPaginas = Integer.parseInt(req.getParameter("cantPaginas"));
         double precio = Double.parseDouble(req.getParameter("precio"));
-        int copias = Integer.parseInt(req.getParameter("copias"));
+        int copias = Integer.parseInt(req.getParameter("copias"))-1;
         
-        int copiasafu = Integer.parseInt(req.getParameter("copiasafu"));
+        int copiasafu = Integer.parseInt(req.getParameter("copiasafu"))+1;
         
         int idLibro = Integer.parseInt(req.getParameter("idLibro"));
 
         Libros lib = new Libros(idLibro, nombre, autor, cantPaginas, precio, copias, copiasafu);
 
-        int regMod = new LibreriaDAO().updateCopiasalq(lib);
+        int regMod = new LibreriaDAO().update(lib);
 
         System.out.println(copias + copiasafu );
 
         accionDefault(req, res);
     }
-    private void devolverLibro1(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+     private void devolverLibro1(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String nombre = req.getParameter("nombre");
         String autor = req.getParameter("autor");
         int cantPaginas = Integer.parseInt(req.getParameter("cantPaginas"));
         double precio = Double.parseDouble(req.getParameter("precio"));
-        int copias = Integer.parseInt(req.getParameter("copias"));
-        int copiasafu = Integer.parseInt(req.getParameter("copiasafu"));
+        int copias = Integer.parseInt(req.getParameter("copias"))+1;
+        
+        int copiasafu = Integer.parseInt(req.getParameter("copiasafu"))-1;
+        
         int idLibro = Integer.parseInt(req.getParameter("idLibro"));
 
         Libros lib = new Libros(idLibro, nombre, autor, cantPaginas, precio, copias, copiasafu);
 
-        int regMod = new LibreriaDAO().updateCopiasdev(lib);
+        int regMod = new LibreriaDAO().update(lib);
 
-        System.out.println("SE ACTUALIZARON: " + regMod + " REGISTROS"+ lib );
+        System.out.println(copias + copiasafu );
 
         accionDefault(req, res);
     }

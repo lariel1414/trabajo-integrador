@@ -13,7 +13,6 @@ public class LibreriaDAO {
     private static final String SQL_CREATE = "INSERT INTO libros(nombre, autor, cantPaginas, precio, copias,copiasafu ) VALUES(?, ?, ?, ?, ?,?)";
     private static final String SQL_READ = "SELECT * FROM libros";
     private static final String SQL_UPDATE_PRECIO = "UPDATE libros SET precio = ? WHERE idlibros = ?";
-    private static final String SQL_UPDATE_COPIAS = "UPDATE libros SET copias = ? , copiasafu=? WHERE idlibros = ?";
     private static final String SQL_DELETE = "DELETE FROM libros WHERE idlibros = ?";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM libros WHERE idlibros = ?";
     private static final String SQL_UPDATE= "UPDATE libros SET nombre = ?, autor = ?, cantPaginas = ?, precio = ?, copias = ? , copiasafu = ? WHERE idlibros = ?";
@@ -135,53 +134,6 @@ public int update(Libros libro) {
         return registros;
     }
 
-    public int updateCopiasalq(Libros libro) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        int registros = 0;
-        try {
-            conn = getConexion();
-            stmt = conn.prepareStatement(SQL_UPDATE_COPIAS);
-            stmt.setInt(1, libro.getCopias());
-            stmt.setInt(2, libro.getCopiasafu());
-            stmt.setInt(3, libro.getIdLibros());
-            registros = stmt.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
-        } finally {
-            try {
-                close(stmt);
-                close(conn);
-            } catch (SQLException ex) {
-                ex.printStackTrace(System.out);
-            }
-        }
-        return registros;
-    }
-public int updateCopiasdev(Libros libro) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        int registros = 0;
-        try {
-            conn = getConexion();
-            stmt = conn.prepareStatement(SQL_UPDATE_COPIAS);
-            stmt.setInt(1, libro.getCopias()-1);
-            stmt.setInt(2, libro.getCopiasafu()+1);
-            stmt.setInt(3, libro.getIdLibros());
-            registros = stmt.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
-        } finally {
-            try {
-                close(stmt);
-                close(conn);
-            } catch (SQLException ex) {
-                ex.printStackTrace(System.out);
-            }
-        }
-        return registros;
-    }
-    
     public int delete(int id) {
         Connection conn = null;
         PreparedStatement stmt = null;

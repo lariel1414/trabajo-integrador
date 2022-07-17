@@ -37,14 +37,14 @@
                                     <td>${libro.copiasafu}</td>
                                     <!-- COMPLETAR HREF CUANDO ESTE TERMINADO JSP EDITAR -->
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/servletControlador?accion=alquilar&idLibro=${libro.idLibros}" 
+                                        <a href="${pageContext.request.contextPath}/servletControlador?accion=alquilar&idLibro=${libro.idLibros}&copias=${libro.copias}" 
                                            class="btn btn-secondary">
                                             <i class="fas fa-angle-double-right"></i>
                                             alquilar
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/servletControlador?accion=devolver&idLibro=${libro.idLibros}" 
+                                        <a href="${pageContext.request.contextPath}/servletControlador?accion=devolver&idLibro=${libro.idLibros}&copiasafu=${libro.copiasafu}" 
                                            class="btn btn-secondary">
                                             <i class="fas fa-angle-double-right"></i>
                                             devolver
